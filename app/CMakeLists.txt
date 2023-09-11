@@ -1,14 +1,15 @@
 set(APP_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/main.cc")
+set(LIBRARY_INCLUDES "./" "${CMAKE_BINARY_DIR}/configured_files/include")
+
+find_package(Protobuf REQUIRED)
 
 add_executable(${EXECUTABLE_NAME} ${APP_SOURCES})
-
+target_include_directories(${EXECUTABLE_NAME} PUBLIC ${LIBRARY_INCLUDES})
 target_link_libraries(
     ${EXECUTABLE_NAME}
-    PRIVATE ${LIBRARY_NAME}
-            nlohmann_json::nlohmann_json
-            fmt::fmt
-            spdlog::spdlog
-            cxxopts::cxxopts)
+    PRIVATE playhouse_connector
+            protobuf::libprotobuf
+    )
 
 if(${ENABLE_WARNINGS})
     target_set_warnings(
